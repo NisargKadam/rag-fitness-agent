@@ -1,4 +1,4 @@
-@'
+
 # 🏋️ RAG Fitness Agent - Complete RAG System Tutorial
 
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
@@ -426,6 +426,3 @@ If this project helped you learn RAG systems, please ⭐ star the repository!
 **Happy Learning! 🚀**
 
 *Built with ❤️ for the AI community*
-'@ | Out-File -FilePath "README.md" -Encoding UTF8 -Force
-
-Write-Host "✅ Professional README.md created!" -ForegroundColor Green
