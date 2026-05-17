@@ -27,3 +27,6 @@ colorama==0.4.6               # Colored terminal output
 
 # Optional: Enhanced logging
 loguru==0.7.3
+
+# Web UI
+streamlit>=1.35.0
