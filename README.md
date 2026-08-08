@@ -16,7 +16,7 @@ Built by **Nisarg Kadam** | AI Trainer & Educator | [LinkedIn](https://linkedin.
 A complete RAG system that answers questions from your own documents with:
 
 - ✅ **4 Advanced Chunking Strategies** (Token-based, Semantic, Agentic, Recursive)
-- ✅ **Vector Database** (ChromaDB with local embeddings)
+- ✅ **Vector Database** (FAISS with local embeddings)
 - ✅ **LangGraph Workflow** (Single-agent state machine)
 - ✅ **Grounded Answers** (No hallucination - cites sources)
 - ✅ **Production-Ready** (Proper error handling, logging, configuration)
@@ -53,7 +53,7 @@ A complete RAG system that answers questions from your own documents with:
                                │
                                ▼
                         ┌──────────────┐
-                        │  ChromaDB    │
+                        │    FAISS     │
                         │ Vector Store │
                         └──────┬───────┘
                                │
@@ -174,7 +174,7 @@ After completing this project, you will understand:
 
 ### Technical Skills
 - ✅ LangChain framework
-- ✅ ChromaDB vector database
+- ✅ FAISS vector database
 - ✅ OpenAI API integration
 - ✅ Python async/await patterns
 - ✅ Production-ready error handling
@@ -193,7 +193,7 @@ rag_fitness_agent/
 │   └── chunking_strategies.py # 4 chunking implementations
 ├── data/
 │   └── pdfs/                  # 📥 Put your PDF files here
-├── vectorstore/               # ChromaDB storage (auto-generated)
+├── vectorstore/               # FAISS storage (auto-generated)
 ├── config.yaml                # Configuration settings
 ├── requirements.txt           # Python dependencies
 ├── .env.example               # Environment variables template
@@ -267,7 +267,7 @@ Shows side-by-side comparison of all 4 strategies.
 
 ### 2. Inspect Vector Database
 ```bash
-python inspect_chromadb.py
+python inspect_vectordb.py
 ```
 
 View:
@@ -360,7 +360,7 @@ Add PDFs to `data/pdfs/` folder
 
 - [LangChain Documentation](https://python.langchain.com/)
 - [LangGraph Tutorial](https://langchain-ai.github.io/langgraph/)
-- [ChromaDB Guide](https://docs.trychroma.com/)
+- [FAISS Documentation](https://faiss.ai/)
 - [RAG Best Practices](https://www.pinecone.io/learn/retrieval-augmented-generation/)
 - [My YouTube Channel](https://youtube.com/@cognithicai) - RAG tutorials
 

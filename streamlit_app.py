@@ -12,7 +12,7 @@ st.set_page_config(
     layout="centered",
 )
 
-VECTORSTORE_DB = Path("./vectorstore/chroma.sqlite3")
+VECTORSTORE_DB = Path("./vectorstore/index.faiss")
 
 
 def check_api_key() -> bool:

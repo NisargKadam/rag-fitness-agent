@@ -8,9 +8,8 @@ embeddings:
   dimension: 384
 
 vectordb:
-  type: "chromadb"
+  type: "faiss"
   persist_directory: "./vectorstore"
-  collection_name: "fitness_docs"
 
 retrieval:
   top_k: 3

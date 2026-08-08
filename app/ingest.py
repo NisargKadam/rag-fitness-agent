@@ -10,7 +10,7 @@ from typing import List
 from dotenv import load_dotenv
 from pypdf import PdfReader
 from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_community.vectorstores import Chroma
+from langchain_community.vectorstores import FAISS
 from langchain.schema import Document
 from tqdm import tqdm
 from colorama import Fore, Style, init
@@ -63,30 +63,32 @@ class DocumentIngestion:
         chunk_size = self.config['chunking']['chunk_size']
         chunk_overlap = self.config['chunking']['chunk_overlap']
         
+        # Lazy construction: only build the selected strategy
+        # (agentic needs an OpenAI key, so it must not be created unless chosen)
         strategies = {
-            "token_based": AdvancedChunkingStrategies.token_based_with_overlap(
+            "token_based": lambda: AdvancedChunkingStrategies.token_based_with_overlap(
                 chunk_size=512,
                 chunk_overlap=128
             ),
-            "semantic": AdvancedChunkingStrategies.semantic_chunking(
+            "semantic": lambda: AdvancedChunkingStrategies.semantic_chunking(
                 chunk_size=chunk_size,
                 chunk_overlap=chunk_overlap
             ),
-            "agentic": AdvancedChunkingStrategies.agentic_chunking(
+            "agentic": lambda: AdvancedChunkingStrategies.agentic_chunking(
                 max_chunk_size=1500,
                 overlap=200
             ),
-            "recursive": AdvancedChunkingStrategies.recursive_chunking(
+            "recursive": lambda: AdvancedChunkingStrategies.recursive_chunking(
                 chunk_size=chunk_size,
                 chunk_overlap=chunk_overlap
             )
         }
-        
+
         if strategy not in strategies:
             print(f"{Fore.YELLOW}⚠️  Unknown strategy '{strategy}', using 'semantic'{Style.RESET_ALL}")
-            return strategies["semantic"]
-        
-        return strategies[strategy]
+            return strategies["semantic"]()
+
+        return strategies[strategy]()
     
     def load_pdfs(self) -> List[Document]:
         """Load all PDF files from the data directory"""
@@ -142,22 +144,20 @@ class DocumentIngestion:
         return chunks
     
     def create_vectorstore(self, chunks: List[Document]):
-        """Create and persist ChromaDB vectorstore"""
+        """Create and persist FAISS vectorstore"""
         print(f"{Fore.CYAN}🗄️  Creating vector database...{Style.RESET_ALL}")
-        
-        # Create ChromaDB vectorstore
-        vectorstore = Chroma.from_documents(
+
+        # Create FAISS vectorstore
+        vectorstore = FAISS.from_documents(
             documents=chunks,
-            embedding=self.embeddings,
-            collection_name=self.config['vectordb']['collection_name'],
-            persist_directory=str(self.vectorstore_dir)
+            embedding=self.embeddings
         )
-        
+        vectorstore.save_local(str(self.vectorstore_dir))
+
         print(f"{Fore.GREEN}✅ Vector database created{Style.RESET_ALL}")
         print(f"{Fore.YELLOW}   Location: {self.vectorstore_dir.absolute()}{Style.RESET_ALL}")
-        print(f"{Fore.YELLOW}   Collection: {self.config['vectordb']['collection_name']}{Style.RESET_ALL}")
         print(f"{Fore.YELLOW}   Total vectors: {len(chunks)}{Style.RESET_ALL}\n")
-        
+
         return vectorstore
     
     def run(self):

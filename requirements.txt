@@ -5,7 +5,7 @@ langchain-community==0.3.13
 langgraph==0.2.59
 
 # Vector Database
-chromadb==0.5.23
+faiss-cpu>=1.11.0
 
 # Embeddings (Local)
 sentence-transformers==3.3.1

@@ -8,7 +8,7 @@ import yaml
 from typing import List
 from dotenv import load_dotenv
 from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_community.vectorstores import Chroma
+from langchain_community.vectorstores import FAISS
 from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema import Document
@@ -32,10 +32,10 @@ class RAGAgent:
         )
         
         # Load vectorstore
-        self.vectorstore = Chroma(
-            collection_name=self.config['vectordb']['collection_name'],
-            embedding_function=self.embeddings,
-            persist_directory=self.config['vectordb']['persist_directory']
+        self.vectorstore = FAISS.load_local(
+            self.config['vectordb']['persist_directory'],
+            self.embeddings,
+            allow_dangerous_deserialization=True  # safe: loading our own local index
         )
         
         # Initialize LLM

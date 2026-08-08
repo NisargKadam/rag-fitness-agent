@@ -31,10 +31,9 @@ rag_env/
 # Environment Variables
 .env
 
-# ChromaDB
+# FAISS vector store
 vectorstore/
-chroma.sqlite3
-*.chroma
+*.faiss
 
 # Logs
 logs/
