@@ -78,7 +78,7 @@ A complete RAG system that answers questions from your own documents with:
 
 ### Prerequisites
 
-- Python 3.8 or higher
+- Python 3.10 or higher (tested on 3.13)
 - OpenAI API key ([Get one free](https://platform.openai.com/api-keys))
 - 1GB free disk space
 
@@ -102,6 +102,8 @@ source venv/bin/activate
 # 4. Install dependencies
 pip install -r requirements.txt
 ```
+
+> ⚠️ **Important:** Steps 2–3 are NOT optional. Always install into a **brand-new virtual environment** — never into system Python, the conda `base` environment, or a venv you used for another project. This project pins LangChain 0.3.x; if your environment already has newer LangChain packages installed, pip will report dependency conflicts (see [Troubleshooting](#%EF%B8%8F-troubleshooting)). Make sure your prompt shows `(venv)` before running `pip install`.
 
 ### Configuration
 
@@ -300,6 +302,29 @@ Adapt this RAG system for:
 ---
 
 ## 🛠️ Troubleshooting
+
+### Issue: pip reports dependency conflicts (langchain-core / langgraph-prebuilt / langchain-classic)
+Example:
+```
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed.
+langgraph-prebuilt X.Y.Z requires langchain-core>=1.3.1, but you have langchain-core 0.3.28 which is incompatible.
+langchain-classic X.Y.Z requires langchain-core<2.0.0,>=1.4.4, but you have langchain-core 0.3.28 ...
+```
+**Cause:** You are installing into an environment that already contains newer LangChain 1.x packages (e.g. you ran `pip install langchain` before, or you're in system Python / conda base). Packages like `langgraph-prebuilt` and `langchain-classic` are **not** used by this project — they are leftovers from a previous install.
+
+**Solution:** Install into a fresh virtual environment:
+```bash
+# From the project folder — deactivate and delete any old venv first
+deactivate  # (ignore errors if not activated)
+rm -rf venv                      # Mac/Linux
+# rmdir /s /q venv               # Windows CMD
+
+python -m venv venv
+source venv/bin/activate         # Mac/Linux
+# .\venv\Scripts\Activate.ps1    # Windows PowerShell
+pip install -r requirements.txt
+```
+Verify your prompt shows `(venv)` before running `pip install`.
 
 ### Issue: "No module named 'app'"
 **Solution:**
